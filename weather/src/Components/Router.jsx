@@ -5,51 +5,82 @@ import {Oversight} from './Oversight'
 import {City} from './City'
 
 import * as API from '../Queries/API'
+import '../Styles/Weather.css'
 
 class Router extends React.Component {
-  constructor(){
+  constructor() {
     super()
 
     this.state = {
-      cities: []
+      cities: [],
+      time: new Date()
     }
   }
 
-  componentDidMount(){
-    Promise.all([
-      API.infoBoston(),
-      API.infoDallas(),
-      API.infoHouston(),
-      API.infoNewYork(),
-      API.infoLosAngeles()
-    ])
-    .then(values => {
-      this.setState({ cities: [values[0].data, values[1].data, values[2].data, values[3].data, values[4].data] })
-    })
-    .catch(error => {
-      console.log('error',error)
+  componentDidMount() {
+    Promise.all([API.infoBoston(), API.infoDallas(), API.infoHouston(), API.infoNewYork(), API.infoLosAngeles()]).then(values => {
+      this.setState({
+        cities: [
+          {
+            ...values[0].data.main,
+            ...values[0].data.sys,
+            city_name: values[0].data.name,
+            weather_description: values[0].data.weather[0].description
+          }, {
+            ...values[1].data.main,
+            ...values[1].data.sys,
+            city_name: values[1].data.name,
+            weather_description: values[1].data.weather[0].description
+          }, {
+            ...values[2].data.main,
+            ...values[2].data.sys,
+            city_name: values[2].data.name,
+            weather_description: values[2].data.weather[0].description
+          }, {
+            ...values[3].data.main,
+            ...values[3].data.sys,
+            city_name: values[3].data.name,
+            weather_description: values[3].data.weather[0].description
+          }, {
+            ...values[4].data.main,
+            ...values[4].data.sys,
+            city_name: values[4].data.name,
+            weather_description: values[4].data.weather[0].description
+          }
+        ]
+      })
+    }).catch(error => {
+      console.log('error', error)
     })
   }
 
   renderOversight = () => {
-    const { cities } = this.state
-    return (<Oversight cities={cities} />)
+    const {cities, time} = this.state
+    return (<Oversight cities={cities} time={time}/>)
   }
 
-  // renderCity = props => {
-  //   const { city_id } = props.match.params
-  //
-  // }
+  renderCity = props => {
+    const {city_name} = props.match.params
+    const {cities} = this.state
 
-  render(){
-    console.log(API)
-    return(
-      <div>
-        <Switch>
-          <Route exact path='/' render={this.renderOversight} />
-        </Switch>
-      </div>
-    )
+    const city_to_render = cities.filter((city) => {
+      return city.city_name === city_name
+    })
+
+    if (city_to_render[0]) {
+      return (<City city={city_to_render[0]}/>)
+    } else {
+      return (<div>city not found</div>)
+    }
+  }
+
+  render() {
+    return (<div className='weather-container'>
+      <Switch>
+        <Route exact path='/' render={this.renderOversight}/>
+        <Route exact path='/city/:city_name' render={this.renderCity}/>
+      </Switch>
+    </div>)
   }
 }
 
