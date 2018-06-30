@@ -12,7 +12,7 @@ export const Oversight = ({cities, time}) => {
   let evening = hours >= 16 && hours < 20
   let night = hours >= 20 || hours < 5
   let test = 'oversight-header'
-  console.log(cities)
+
   return (<div>
     <div className='oversight-greeting'>
       <h1 className={test}>
