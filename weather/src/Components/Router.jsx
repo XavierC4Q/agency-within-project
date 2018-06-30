@@ -25,27 +25,32 @@ class Router extends React.Component {
             ...values[0].data.main,
             ...values[0].data.sys,
             city_name: values[0].data.name,
-            weather_description: values[0].data.weather[0].description
+            weather_description: values[0].data.weather[0].description,
+            icon: values[0].data.weather[0].icon
           }, {
             ...values[1].data.main,
             ...values[1].data.sys,
             city_name: values[1].data.name,
-            weather_description: values[1].data.weather[0].description
+            weather_description: values[1].data.weather[0].description,
+            icon: values[1].data.weather[0].icon
           }, {
             ...values[2].data.main,
             ...values[2].data.sys,
             city_name: values[2].data.name,
-            weather_description: values[2].data.weather[0].description
+            weather_description: values[2].data.weather[0].description,
+            icon: values[2].data.weather[0].icon
           }, {
             ...values[3].data.main,
             ...values[3].data.sys,
             city_name: values[3].data.name,
-            weather_description: values[3].data.weather[0].description
+            weather_description: values[3].data.weather[0].description,
+            icon: values[3].data.weather[0].icon
           }, {
             ...values[4].data.main,
             ...values[4].data.sys,
             city_name: values[4].data.name,
-            weather_description: values[4].data.weather[0].description
+            weather_description: values[4].data.weather[0].description,
+            icon: values[4].data.weather[0].icon
           }
         ]
       })
@@ -75,7 +80,7 @@ class Router extends React.Component {
   }
 
   render() {
-    return (<div className='weather-container'>
+    return (<div>
       <Switch>
         <Route exact path='/' render={this.renderOversight}/>
         <Route exact path='/city/:city_name' render={this.renderCity}/>
